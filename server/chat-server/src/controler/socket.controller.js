@@ -1,23 +1,13 @@
-const messageService = require("../services/message.service");
-
-exports.handleSocket = (io, socket) => {
-    console.log("User connected:", socket.id);
-
-    socket.on("sendMessage", async (text) => {
-        try {
-            await messageService.saveMessage(socket.id, text);
-
-            io.emit("receiveMessage", {
-                id: socket.id,
-                text,
-                time: new Date().toLocaleTimeString(),
-            });
-        } catch (err) {
-            console.error("Message save failed", err);
-        }
+module.exports = (io, socket) => {
+    socket.on("sendMessage", (message) => {
+        io.emit("receiveMessage", {
+            userId: socket.user.userId,
+            text: message,
+            time: new Date().toLocaleTimeString(),
+        });
     });
 
     socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id);
+        console.log("User disconnected:", socket.user.userId);
     });
 };
