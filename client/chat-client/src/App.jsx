@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-ro
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Chat from "./components/Chat";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
@@ -47,6 +48,8 @@ function App() {
           <Route
             path="/chat"
             element={isAuthenticated ? <Chat onLogout={handleLogout} /> : <Navigate to="/login" />}
+            // element={isAuthenticated ? <ChatPage onLogout={handleLogout} /> : <Navigate to="/login" />}
+
           />
 
           {/* Default Redirect */}

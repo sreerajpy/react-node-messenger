@@ -19,6 +19,7 @@ export default function Chat() {
 
     socket.on("receiveMessage", (msg) => {
       setMessages((prev) => [...prev, msg]);
+       console.log("📨 Received:", data);
     });
 
     return () => socket.disconnect();
@@ -28,7 +29,12 @@ export default function Chat() {
     if (e) e.preventDefault();
     if (!message.trim()) return;
 
-    socket.emit("sendMessage", message);
+
+    socket.emit("privateMessage", {
+      toUserId: 22,
+      message: message
+    });
+
     setMessage("");
   };
 
@@ -54,7 +60,7 @@ export default function Chat() {
           {messages.map((m, i) => {
             // Logic to check if message is from the current user
             // Replace 'currentUserId' with your actual logic/state if available
-            const isMe = m.userId === "me"; 
+            const isMe = m.userId === "me";
 
             return (
               <div key={i} style={{
